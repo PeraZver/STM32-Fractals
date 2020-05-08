@@ -26,7 +26,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ILI9341_Driver.h"
+#include "display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,7 +94,12 @@ int main(void)
   MX_SPI1_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  ILI9341_Init();
+  ILI9341_Set_Rotation(0);
+  ILI9341_Fill_Screen(BLACK);
+  HAL_Delay(500);
+  ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2); /* Draw border for the menu */
+  ILI9341_Draw_Empty_Rectangle(YELLOW, 10, 10, 310, 230);
   /* USER CODE END 2 */
  
  
