@@ -33,3 +33,10 @@ This is an educational project, so the purpose is only fun and learning.
  * Standard STM32 HAL Libraries, on the fresh STM32CubeIDE
  * ILI9341 Driver - I'm using an existing library from [this guy](https://github.com/martnak/STM32-ILI9341)
    * Actually, I switched to [this one](https://github.com/afiskon/stm32-ili9341); it has nice GUI.
+
+## To-Do
+
+ - [x] Button zoom 
+ - [ ] Touchscreen centering
+ - [ ] Colour mapping
+ - [ ] Mandelbrot fractals
