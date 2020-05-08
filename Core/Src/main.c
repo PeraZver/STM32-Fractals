@@ -43,7 +43,8 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define Y_SIZE 240
+#define X_SIZE 320
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -71,6 +72,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+  uint8_t buffer[X_SIZE*Y_SIZE] = {0};
   /* USER CODE END 1 */
   
 
@@ -99,8 +101,17 @@ int main(void)
   ILI9341_Set_Rotation(0);
   ILI9341_Fill_Screen(BLACK);
   HAL_Delay(500);
-  ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2); /* Draw border for the menu */
-  ILI9341_Draw_Empty_Rectangle(YELLOW, 10, 10, 310, 230);
+  ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
+  //ILI9341_Draw_Empty_Rectangle(YELLOW, 10, 10, 310, 230);
+
+
+  GenerateJulia_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, 320, buffer);
+  for (int x = 0; x < X_SIZE; x++)
+	  for (int y = 0; y < Y_SIZE; y++)
+		  ILI9341_Draw_Pixel(x, y, buffer[y + x*Y_SIZE]);
+
+
+
   /* USER CODE END 2 */
  
  
