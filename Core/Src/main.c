@@ -29,6 +29,7 @@
 #include "ILI9341_Driver.h"
 #include "display.h"
 #include "fractals.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +51,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t buffer[X_SIZE*Y_SIZE] = {0};
+uint16_t zoom = 10;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -72,7 +74,6 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-  uint8_t buffer[X_SIZE*Y_SIZE] = {0};
   /* USER CODE END 1 */
   
 
@@ -105,11 +106,14 @@ int main(void)
   //ILI9341_Draw_Empty_Rectangle(YELLOW, 10, 10, 310, 230);
 
 
-  GenerateJulia_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, 320, buffer);
+  GenerateJulia_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
   for (int x = 0; x < X_SIZE; x++)
 	  for (int y = 0; y < Y_SIZE; y++)
 		  ILI9341_Draw_Pixel(x, y, buffer[y + x*Y_SIZE]);
 
+  char display_string[15]={' '};
+  snprintf(display_string, 30, "zoom: %d", zoom );
+  ILI9341_Draw_String(10, 10, WHITE, BLACK, display_string, 2);
 
 
   /* USER CODE END 2 */
@@ -171,7 +175,19 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	char display_string[15]={' '};
 
+	zoom = zoom + 10;
+
+	GenerateJulia_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
+	for (int x = 0; x < X_SIZE; x++)
+		for (int y = 0; y < Y_SIZE; y++)
+			ILI9341_Draw_Pixel(x, y, buffer[y + x*Y_SIZE]);
+
+	snprintf(display_string, 30, "zoom: %d", zoom );
+	ILI9341_Draw_String(10, 10, WHITE, BLACK, display_string, 2);
+}
 /* USER CODE END 4 */
 
 /**
