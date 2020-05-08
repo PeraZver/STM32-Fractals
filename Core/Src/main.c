@@ -28,6 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include "ILI9341_Driver.h"
 #include "display.h"
+#include "fractals.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
