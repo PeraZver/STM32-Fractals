@@ -24,7 +24,7 @@ void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 			 num_img = num_img / zoom;
 			 i=0;
 			 radius = 0;
-			 while ((i<ITERATION-1) && (radius < 2)) {
+			 while ((i<ITERATION-1) && (radius < RADIUS)) {
 				 tmp1 = num_real * num_real;
 				 tmp2 = num_img * num_img;
 				 num_img = 2*num_real*num_img + IMG_CONSTANT;
