@@ -37,3 +37,39 @@ void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 		}
 	}
 }
+
+void drawMandelbrot_Double(float centre_X, float centre_Y, float Zoom,
+						   uint16_t IterationMax)
+{
+	 double X_Min = centre_X - 1.0/Zoom;
+	 double X_Max = centre_X + 1.0/Zoom;
+	 double Y_Min = centre_Y - (YSIZE_PHYS-CONTROL_SIZE_Y) / (XSIZE_PHYS * Zoom);
+	 double Y_Max = centre_Y + (YSIZE_PHYS-CONTROL_SIZE_Y) / (XSIZE_PHYS * Zoom);
+	 double dx = (X_Max - X_Min) / XSIZE_PHYS;
+	 double dy = (Y_Max - Y_Min) / (YSIZE_PHYS-CONTROL_SIZE_Y) ;
+
+	 double y = Y_Min;
+
+	 double c;
+	 for (uint16_t j = 0; j < (YSIZE_PHYS-CONTROL_SIZE_Y); j++)	{
+		 double x = X_Min;
+		 for (uint16_t i = 0; i < XSIZE_PHYS; i++) {
+			 double Zx = x;
+			 double Zy = y;
+			 int n = 0;
+			 while (n < IterationMax) {
+				 double Zx2 = Zx * Zx;
+				 double Zy2 = Zy * Zy;
+				 double Zxy = 2.0 * Zx * Zy;
+				 Zx = Zx2 - Zy2 + x;
+				 Zy = Zxy + y;
+				 if(Zx2 + Zy2 > 16.0) {
+					 break;
+				 }
+				 n++;
+			 }
+			 x += dx;
+		 }
+		 y += dy;
+	 }
+ }
