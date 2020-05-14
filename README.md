@@ -1,13 +1,13 @@
 # Fractals on STM32F4
 
 I am trying to generate the fractal images on my TFT LCD touchscreen. 
-I'll be using an (application note)[https://www.st.com/content/ccc/resource/technical/document/application_note/10/6b/dc/ea/5b/6e/47/46/DM00047230.pdf/files/DM00047230.pdf/jcr:content/translations/en.DM00047230.pdf] from ST, made to demostrate advatages of hardware FPU. 
+I'll be using an [application note](https://www.st.com/content/ccc/resource/technical/document/application_note/10/6b/dc/ea/5b/6e/47/46/DM00047230.pdf/files/DM00047230.pdf/jcr:content/translations/en.DM00047230.pdf) from ST, made to demostrate advatages of hardware FPU. 
 
 This is an educational project, so the purpose is only fun and learning.
 
 ## Hardware 
  * A NUCLEO-F411RE board with STM32F411RET6 (100 MHz SYSCLK)
- * A TFT-LCD with ILI9341 driver from [AliExpress](https://www.aliexpress.com/item/32815224002.html?spm=a2g0s.9042311.0.0.6f9d4c4dv0T4OV), with SPI (100 MHz SCK)
+ * A TFT-LCD with ILI9341 driver and XPT2046 touchscreen controller from [AliExpress](https://www.aliexpress.com/item/32815224002.html?spm=a2g0s.9042311.0.0.6f9d4c4dv0T4OV), with SPI (100 MHz SCK)
 
 ### Wiring
 
@@ -39,7 +39,7 @@ This is an educational project, so the purpose is only fun and learning.
  - [x] Button zoom 
  - [ ] Touchscreen centering
  - [ ] Colour mapping
- - [ ] Mandelbrot fractals
+ - [x] Mandelbrot fractals
 
 ## Resources
 

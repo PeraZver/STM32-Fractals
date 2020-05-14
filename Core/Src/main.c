@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ILI9341_Driver.h"
+#include "Touch.h"
 #include "display.h"
 #include "fractals.h"
 #include "stdio.h"
@@ -52,6 +53,8 @@
 /* USER CODE BEGIN PV */
 uint8_t buffer[LCD_X_SIZE*LCD_Y_SIZE] = {0};
 uint16_t zoom = 90;
+uint16_t xtemp = LCD_X_SIZE/2;
+uint16_t ytemp = LCD_Y_SIZE/2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -116,6 +119,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		if (tp_dev.scan(0)) {
+			xtemp = TP_Read_XOY(0xD0);
+			ytemp = TP_Read_XOY(0x90);
+		}
   }
   /* USER CODE END 3 */
 }
@@ -171,7 +178,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	zoom = zoom + 10;
 
 	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, LCD_X_SIZE/2, LCD_Y_SIZE/2, zoom, buffer);
+	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, xtemp, ytemp, zoom, buffer);
 
 	for (int y = 0; y < LCD_Y_SIZE ; y++)
 		for (int x = 0; x < LCD_X_SIZE; x++)
