@@ -17,10 +17,7 @@
 #define ITERATION 128
 #define RADIUS 4
 
-
-#define YSIZE_PHYS 240
-#define CONTROL_SIZE_Y YSIZE_PHYS-5
-#define XSIZE_PHYS 320
+#define MANDELBROT_OFFSET LCD_X_SIZE/4 // Original Mandelbrot  has that funny offset
 
 
 void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,

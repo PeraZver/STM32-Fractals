@@ -89,7 +89,9 @@ void Error_Handler(void);
 #define DC_Pin GPIO_PIN_7
 #define DC_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+/* TFT LCD Resolution */
+#define LCD_Y_SIZE 240
+#define LCD_X_SIZE 320
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -44,14 +44,13 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define Y_SIZE 240
-#define X_SIZE 320
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t buffer[X_SIZE*Y_SIZE] = {0};
+uint8_t buffer[LCD_X_SIZE*LCD_Y_SIZE] = {0};
 uint16_t zoom = 90;
 /* USER CODE END PV */
 
@@ -172,11 +171,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	zoom = zoom + 10;
 
 	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-	GenerateMandelbrot_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
+	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, LCD_X_SIZE/2, LCD_Y_SIZE/2, zoom, buffer);
 
-	for (int y = 0; y < Y_SIZE ; y++)
-		for (int x = 0; x < X_SIZE; x++)
-			ILI9341_Draw_Pixel(x, y, buffer[x + y*X_SIZE]);
+	for (int y = 0; y < LCD_Y_SIZE ; y++)
+		for (int x = 0; x < LCD_X_SIZE; x++)
+			ILI9341_Draw_Pixel(x, y, buffer[x + y*LCD_X_SIZE]);
 
 	snprintf(display_string, 30, "zoom: %d", zoom );
 	ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);

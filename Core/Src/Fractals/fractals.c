@@ -60,10 +60,10 @@ void GenerateMandelbrot_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 
 	 for (y=0; y<size_y; y++) {
 		 for (x=0; x<size_x; x++) {      // Run through all the pixels
-			 num_real = y - offset_y;    // Zoom in a proper scale
-			 num_real = num_real / zoom;
-			 num_img = x - offset_x;
+			 num_img = y - offset_y;    // Zoom in a proper scale
 			 num_img = num_img / zoom;
+			 num_real = x - offset_x - MANDELBROT_OFFSET;
+			 num_real = num_real / zoom;
 			 i=0;
 			 radius = 0;
 			 float Zx = 0;
