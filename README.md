@@ -1,7 +1,7 @@
 # Fractals on STM32F4
 
 I am trying to generate the fractal images on my TFT LCD touchscreen. 
-I'll be using an (application note)[https://www.st.com/content/ccc/resource/technical/document/application_note/10/6b/dc/ea/5b/6e/47/46/DM00047230.pdf/files/DM00047230.pdf/jcr:content/translations/en.DM00047230.pdf] 
+I'll be using an (application note)[https://www.st.com/content/ccc/resource/technical/document/application_note/10/6b/dc/ea/5b/6e/47/46/DM00047230.pdf/files/DM00047230.pdf/jcr:content/translations/en.DM00047230.pdf] from ST, made to demostrate advatages of hardware FPU. 
 
 This is an educational project, so the purpose is only fun and learning.
 
@@ -22,10 +22,10 @@ This is an educational project, so the purpose is only fun and learning.
 |SCK      |CN5-6  | PA5       | D13, SCK          |
 |LED      |CN7-5  | VDD       | 5V                |
 |MISO     |CN5-5  | PA6       | D12, MISO         |
-|T_CLK    |CN8-4  | PB10      | A3, Touch CLK     |
+|T_CLK    |CN9-7  | PB10      | A3, Touch CLK     |
 |T_CS     |CN10-6 | PC5       |               	  |
-|T_DIN    |CN10-34| PC3       |              	  |
-|T_DO     |CN10-22| PC2       |              	  |
+|T_DIN    |CN7-37 | PC3       |              	  |
+|T_DO     |CN7-35 | PC2       |              	  |
 |T_IRQ    |CN10-24| PB1       |              	  |
 
 
@@ -40,3 +40,8 @@ This is an educational project, so the purpose is only fun and learning.
  - [ ] Touchscreen centering
  - [ ] Colour mapping
  - [ ] Mandelbrot fractals
+
+## Resources
+
+ - [Very well documented example on ESP32/Arduino](https://www.instructables.com/id/Mandelbrot-and-Julia-Sets-on-ESP32/)
+ - [Lousy documented app note from ST about FPU](https://www.st.com/content/ccc/resource/technical/document/application_note/10/6b/dc/ea/5b/6e/47/46/DM00047230.pdf/files/DM00047230.pdf/jcr:content/translations/en.DM00047230.pdf)
