@@ -171,7 +171,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	zoom = zoom + 10;
 
-	GenerateJulia_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
+	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
+	GenerateMandelbrot_fpu(X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
 
 	for (int y = 0; y < Y_SIZE ; y++)
 		for (int x = 0; x < X_SIZE; x++)
