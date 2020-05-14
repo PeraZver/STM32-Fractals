@@ -7,6 +7,12 @@
 
 #include "fractals.h"
 
+/*
+ * Julia Set is generated in such a way that every pixel is treated as an initial complex number Z_0, and c
+ * is a constant defined in fractals.h. This function iterates formula Zn+1 = Zn^2 + c until either RADIUS or
+ * ITERATION value is reached. This way, every pixel is assigned a value that corresponds to color intesity
+ * and represents as a part of a Julia set.
+ */
 void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 					   uint16_t offset_y, uint16_t zoom, uint8_t * buffer)
 {
@@ -37,39 +43,41 @@ void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 		}
 	}
 }
-
-void drawMandelbrot_Double(float centre_X, float centre_Y, float Zoom,
-						   uint16_t IterationMax)
+/*
+* Mandelbrot Set is generated in such a way that every pixel is treated as a complex number c, while complex
+* number Zn is run iterated from inital 0-value. This function iterates formula Zn+1 = Zn^2 + c until either RADIUS or
+* ITERATION value is reached. This way, every pixel is assigned a value that corresponds to color intesity
+* and represents as a part of a Mandelbrot set.
+*/
+void GenerateMandelbrot_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
+							uint16_t offset_y, uint16_t zoom, uint8_t * buffer)
 {
-	 double X_Min = centre_X - 1.0/Zoom;
-	 double X_Max = centre_X + 1.0/Zoom;
-	 double Y_Min = centre_Y - (YSIZE_PHYS-CONTROL_SIZE_Y) / (XSIZE_PHYS * Zoom);
-	 double Y_Max = centre_Y + (YSIZE_PHYS-CONTROL_SIZE_Y) / (XSIZE_PHYS * Zoom);
-	 double dx = (X_Max - X_Min) / XSIZE_PHYS;
-	 double dy = (Y_Max - Y_Min) / (YSIZE_PHYS-CONTROL_SIZE_Y) ;
+	 float tmp1, tmp2;
+	 float num_real, num_img;
+	 float radius;
+	 uint8_t i;
+	 int x,y;
 
-	 double y = Y_Min;
-
-	 double c;
-	 for (uint16_t j = 0; j < (YSIZE_PHYS-CONTROL_SIZE_Y); j++)	{
-		 double x = X_Min;
-		 for (uint16_t i = 0; i < XSIZE_PHYS; i++) {
-			 double Zx = x;
-			 double Zy = y;
-			 int n = 0;
-			 while (n < IterationMax) {
-				 double Zx2 = Zx * Zx;
-				 double Zy2 = Zy * Zy;
-				 double Zxy = 2.0 * Zx * Zy;
-				 Zx = Zx2 - Zy2 + x;
-				 Zy = Zxy + y;
-				 if(Zx2 + Zy2 > 16.0) {
-					 break;
-				 }
-				 n++;
+	 for (y=0; y<size_y; y++) {
+		 for (x=0; x<size_x; x++) {
+			 num_real = y - offset_y;
+			 num_real = num_real / zoom;
+			 num_img = x - offset_x;
+			 num_img = num_img / zoom;
+			 i=0;
+			 radius = 0;
+			 float Zx = 0;
+			 float Zy = 0;
+			 while ((i<ITERATION-1) && (radius < RADIUS)) {
+				 tmp1 = Zx * Zx;
+				 tmp2 = Zy * Zy;
+				 Zy = 2*Zx*Zy + num_img;
+				 Zx = tmp1 - tmp2 + num_real;
+				 radius = tmp1 + tmp2;
+				 i++;
 			 }
-			 x += dx;
-		 }
-		 y += dy;
-	 }
+			 /* Store the value in the buffer */
+			 buffer[x+y*size_x] = i;
+		}
+	}
  }
