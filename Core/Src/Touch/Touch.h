@@ -2,6 +2,8 @@
 #include "math.h"
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include "ILI9341_Driver.h"
+#include "stdio.h"
 
 #define TP_PRES_DOWN 0x80
 #define TP_CATH_PRES 0x40
@@ -10,7 +12,7 @@ typedef struct
 {
 	uint8_t (*init)(void);
 	uint8_t (*scan)(uint8_t);
-	//void (*adjust)(void);
+	void (*adjust)(void);
 	uint16_t x0;
 	uint16_t y0;
 	uint16_t x;
@@ -61,4 +63,4 @@ uint8_t TP_Get_Adjdata(void);
 void TP_Adjust(void);
 uint8_t TP_Init(void);
 
-void TP_Adj_Info_Show(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t x3,uint16_t y3,uint16_t fac);
+void TP_Adj_Info_Show(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t x3,uint16_t y3, double fac);
