@@ -27,8 +27,8 @@ _m_tp_dev tp_dev=
 	0
 };
 
-uint8_t CMD_RDX = 0XD0;
-uint8_t CMD_RDY = 0X90;
+uint8_t CMD_RDY = 0XD0;
+uint8_t CMD_RDX = 0X90;
 
 /*****************************************************************************
  * @name       :void TP_Write_Byte(uint8_t num)

@@ -171,6 +171,8 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
+	HAL_NVIC_DisableIRQ(EXTI1_IRQn);
+
 	char display_string[15]={' '};
 
 	if (tp_dev.scan(0)) {
@@ -180,7 +182,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	zoom = zoom + 10;
 
 	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, xtemp, ytemp, zoom, buffer);
+	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, tp_dev.x, tp_dev.y, zoom, buffer);
 
 	for (int y = 0; y < LCD_Y_SIZE ; y++)
 		for (int x = 0; x < LCD_X_SIZE; x++)
@@ -189,7 +191,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	snprintf(display_string, 30, "zoom: %d", zoom );
 	ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);
 
-	while(!T_IRQ);
+	HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 }
 /* USER CODE END 4 */
 
