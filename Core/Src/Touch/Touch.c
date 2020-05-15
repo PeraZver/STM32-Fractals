@@ -348,29 +348,25 @@ uint8_t TP_Scan(uint8_t tp)
 //								fac:calibration factor
 // * @retvalue   :None
 //******************************************************************************/
-//void TP_Adj_Info_Show(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t x3,uint16_t y3,uint16_t fac)
-//{
-//	POINT_COLOR=RED;
-//	LCD_ShowString(40,140,16,"x1:",1);
-// 	LCD_ShowString(40+80,140,16,"y1:",1);
-// 	LCD_ShowString(40,160,16,"x2:",1);
-// 	LCD_ShowString(40+80,160, 16,"y2:",1);
-//	LCD_ShowString(40,180, 16,"x3:",1);
-// 	LCD_ShowString(40+80,180, 16,"y3:",1);
-//	LCD_ShowString(40,200, 16,"x4:",1);
-// 	LCD_ShowString(40+80,200, 16,"y4:",1);
-// 	LCD_ShowString(40,220, 16,"fac is:",1);
-//	LCD_ShowNum(40+24,140,x0,4,16);ֵ
-//	LCD_ShowNum(40+24+80,140,y0,4,16);	ֵ
-//	LCD_ShowNum(40+24,160,x1,4,16);		ֵ
-//	LCD_ShowNum(40+24+80,160,y1,4,16);	ֵ
-//	LCD_ShowNum(40+24,180,x2,4,16);		ֵ
-//	LCD_ShowNum(40+24+80,180,y2,4,16);ֵ
-//	LCD_ShowNum(40+24,200,x3,4,16);ֵ
-//	LCD_ShowNum(40+24+80,200,y3,4,16);ֵ
-// 	LCD_ShowNum(40+56,220,fac,3,16);
-//}
-//
+void TP_Adj_Info_Show(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t x3,uint16_t y3, double fac)
+{
+	char display_string[30] = {' '};
+	snprintf(display_string, 30, "x1=%d, y1=%d", x0, y0 );
+	ILI9341_Draw_String(40, 140, OLIVE, WHITE, display_string, 1);
+
+	snprintf(display_string, 30, "x2=%d, y2=%d", x1, y1 );
+	ILI9341_Draw_String(40, 160, OLIVE, WHITE, display_string, 1);
+
+	snprintf(display_string, 30, "x3=%d, y3=%d", x2, y2 );
+	ILI9341_Draw_String(40, 180, OLIVE, WHITE, display_string, 1);
+
+	snprintf(display_string, 30, "x4=%d, y4=%d", x3, y3 );
+	ILI9341_Draw_String(40, 200, OLIVE, WHITE, display_string, 1);
+
+	snprintf(display_string, 30, "fac=%.5f", fac );
+	ILI9341_Draw_String(40, 220, OLIVE, WHITE, display_string, 1);
+}
+
 ///*****************************************************************************
 // * @name       :uint8_t TP_Get_Adjdata(void)
 // * @date       :2018-08-09
@@ -393,11 +389,11 @@ void TP_Adjust(void)
 	POINT_COLOR=RED;
 	ILI9341_Fill_Screen(WHITE);
 	POINT_COLOR=BLACK;
-	ILI9341_Draw_String(40,40,OLIVE, WHITE, "Please use the stylus click",1);
-	ILI9341_Draw_String(40,60,OLIVE, WHITE,"the cross on the screen.",1);
-	ILI9341_Draw_String(40,80,OLIVE, WHITE,"The cross will always move",1);
-	ILI9341_Draw_String(40,100,OLIVE, WHITE,"until the screen adjustment",1);
-	ILI9341_Draw_String(40,120,OLIVE, WHITE,"is completed.",1);
+	ILI9341_Draw_String(40,20,OLIVE, WHITE, "Please use the stylus click",1);
+	ILI9341_Draw_String(40,40,OLIVE, WHITE,"the cross on the screen.",1);
+	ILI9341_Draw_String(40,60,OLIVE, WHITE,"The cross will always move",1);
+	ILI9341_Draw_String(40,80,OLIVE, WHITE,"until the screen adjustment",1);
+	ILI9341_Draw_String(40,100,OLIVE, WHITE,"is completed.",1);
 
 	ILI9341_Draw_Circle(20,20,10,RED,0);
 	tp_dev.sta=0;
@@ -447,7 +443,7 @@ void TP_Adjust(void)
 						cnt=0;
  				    	ILI9341_Draw_Circle(LCD_X_SIZE-20,LCD_Y_SIZE-20,10,WHITE, 0);
    	 					ILI9341_Draw_Circle(20,20,10,RED, 0);
- 						//TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
+ 						TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
  						continue;
 					}
 					tem1=abs(pos_temp[0][0]-pos_temp[2][0]);//x1-x3
@@ -467,7 +463,7 @@ void TP_Adjust(void)
 						cnt=0;
  				    	ILI9341_Draw_Circle(LCD_X_SIZE-20,LCD_Y_SIZE-20,10,WHITE, 0);
    	 					ILI9341_Draw_Circle(20,20,10,RED, 0);
- 						//TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
+ 						TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
 						continue;
 					}
 
@@ -488,7 +484,7 @@ void TP_Adjust(void)
 						cnt=0;
  				    	ILI9341_Draw_Circle(LCD_X_SIZE-20,LCD_Y_SIZE-20,10,WHITE,0);
    	 					ILI9341_Draw_Circle(20,20,10,RED, 0);
- 						//TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
+ 						TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
 						continue;
 					}
 
