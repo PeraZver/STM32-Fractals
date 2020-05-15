@@ -52,9 +52,7 @@
 
 /* USER CODE BEGIN PV */
 uint8_t buffer[LCD_X_SIZE*LCD_Y_SIZE] = {0};
-uint16_t zoom = 90;
-uint16_t xtemp = LCD_X_SIZE/2;
-uint16_t ytemp = LCD_Y_SIZE/2;
+uint16_t zoom = 100;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -173,16 +171,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	HAL_NVIC_DisableIRQ(EXTI1_IRQn);
 
+	uint16_t X_OFFSET = LCD_X_SIZE/2;
+	uint16_t Y_OFFSET = LCD_Y_SIZE/2;
+
 	char display_string[15]={' '};
 
 	if (tp_dev.scan(0)) {
-		TP_Read_XY2(&xtemp, &ytemp);
+		zoom += 20;
+		X_OFFSET = LCD_X_SIZE - tp_dev.x;
+		Y_OFFSET = LCD_Y_SIZE - tp_dev.y;
 	}
 
-	zoom = zoom + 10;
-
 	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, tp_dev.x, tp_dev.y, zoom, buffer);
+	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, X_OFFSET, Y_OFFSET, zoom, buffer);
 
 	for (int y = 0; y < LCD_Y_SIZE ; y++)
 		for (int x = 0; x < LCD_X_SIZE; x++)
