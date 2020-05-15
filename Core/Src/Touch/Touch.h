@@ -2,6 +2,7 @@
 #include "math.h"
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include "ILI9341_Driver.h"
 
 #define TP_PRES_DOWN 0x80
 #define TP_CATH_PRES 0x40
@@ -10,7 +11,7 @@ typedef struct
 {
 	uint8_t (*init)(void);
 	uint8_t (*scan)(uint8_t);
-	//void (*adjust)(void);
+	void (*adjust)(void);
 	uint16_t x0;
 	uint16_t y0;
 	uint16_t x;
