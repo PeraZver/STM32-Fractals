@@ -107,7 +107,7 @@ int main(void)
   ILI9341_Set_Rotation(SCREEN_HORIZONTAL_2);
   //ILI9341_Draw_Empty_Rectangle(YELLOW, 10, 10, 310, 230);
 
-  tp_dev.adjust();
+  //tp_dev.adjust();
 
   /* USER CODE END 2 */
  
@@ -120,9 +120,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		if (tp_dev.scan(0)) {
-			TP_Read_XY2(&xtemp, &ytemp);
-		}
+
   }
   /* USER CODE END 3 */
 }
@@ -175,6 +173,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	char display_string[15]={' '};
 
+	if (tp_dev.scan(0)) {
+		TP_Read_XY2(&xtemp, &ytemp);
+	}
+
 	zoom = zoom + 10;
 
 	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
@@ -186,6 +188,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	snprintf(display_string, 30, "zoom: %d", zoom );
 	ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);
+
+	while(!T_IRQ);
 }
 /* USER CODE END 4 */
 
