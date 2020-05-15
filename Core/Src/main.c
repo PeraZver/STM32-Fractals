@@ -120,8 +120,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		if (tp_dev.scan(0)) {
-			xtemp = TP_Read_XOY(0xD0);
-			ytemp = TP_Read_XOY(0x90);
+			TP_Read_XY2(&xtemp, &ytemp);
 		}
   }
   /* USER CODE END 3 */
