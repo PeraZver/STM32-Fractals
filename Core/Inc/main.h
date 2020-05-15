@@ -61,7 +61,6 @@ void Error_Handler(void);
 #define NO_CONVERSIONS 10
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define B1_EXTI_IRQn EXTI15_10_IRQn
 #define T_DO_Pin GPIO_PIN_2
 #define T_DO_GPIO_Port GPIOC
 #define T_DIN_Pin GPIO_PIN_3
@@ -74,6 +73,7 @@ void Error_Handler(void);
 #define T_CS_GPIO_Port GPIOC
 #define T_IRQ_Pin GPIO_PIN_1
 #define T_IRQ_GPIO_Port GPIOB
+#define T_IRQ_EXTI_IRQn EXTI1_IRQn
 #define T_CLK_Pin GPIO_PIN_10
 #define T_CLK_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
