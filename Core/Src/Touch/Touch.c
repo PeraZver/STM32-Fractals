@@ -350,6 +350,8 @@ uint8_t TP_Scan(uint8_t tp)
 //******************************************************************************/
 void TP_Adj_Info_Show(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t x3,uint16_t y3, double fac)
 {
+	ILI9341_Draw_Filled_Rectangle(WHITE, 30, 130, 200, 230);
+
 	char display_string[30] = {' '};
 	snprintf(display_string, 30, "x1=%d, y1=%d", x0, y0 );
 	ILI9341_Draw_String(40, 140, OLIVE, WHITE, display_string, 1);
@@ -383,12 +385,7 @@ void TP_Adjust(void)
 	double fac;
 	uint16_t outtime=0;
  	cnt=0;
-	POINT_COLOR = BLUE;
-	BACK_COLOR = WHITE;
 	ILI9341_Fill_Screen(WHITE);
-	POINT_COLOR=RED;
-	ILI9341_Fill_Screen(WHITE);
-	POINT_COLOR=BLACK;
 	ILI9341_Draw_String(40,20,OLIVE, WHITE, "Please use the stylus click",1);
 	ILI9341_Draw_String(40,40,OLIVE, WHITE,"the cross on the screen.",1);
 	ILI9341_Draw_String(40,60,OLIVE, WHITE,"The cross will always move",1);
@@ -497,7 +494,7 @@ void TP_Adjust(void)
 					{
 						cnt=0;
    						ILI9341_Fill_Screen(WHITE);
-						ILI9341_Draw_String(40,20, OLIVE, WHITE, "TP Need readjust!",1);
+						ILI9341_Draw_String(40,20, OLIVE, WHITE, "Readjusting...please repeat.",1);
    	 					ILI9341_Draw_Circle(20,20,10,RED, 0);
 						tp_dev.touchtype=!tp_dev.touchtype;
 						if(tp_dev.touchtype)
@@ -512,15 +509,16 @@ void TP_Adjust(void)
 						continue;
 					}
 					POINT_COLOR=BLUE;
-					ILI9341_Fill_Screen(WHITE);
-					ILI9341_Draw_String(40,110, OLIVE, WHITE, "Touch Screen Adjust OK!",1);
+					ILI9341_Draw_Filled_Rectangle(WHITE, 30, 10, 200, 110);
+					ILI9341_Draw_String(40,20, OLIVE, WHITE, "Touch Screen Adjust OK!",1);
+					TP_Adj_Info_Show(pos_temp[0][0],pos_temp[0][1],pos_temp[1][0],pos_temp[1][1],pos_temp[2][0],pos_temp[2][1],pos_temp[3][0],pos_temp[3][1],fac*100);
 					HAL_Delay(2000);
 					//TP_Save_Adjdata();
 					ILI9341_Fill_Screen(WHITE);
 					return;
 			}
 		}
-		HAL_Delay(2000);
+		HAL_Delay(1000);
 		outtime++;
 		if(outtime>1000)
 		{
