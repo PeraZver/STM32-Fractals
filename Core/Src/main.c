@@ -180,17 +180,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		zoom += 20;
 		X_OFFSET = LCD_X_SIZE - tp_dev.x;
 		Y_OFFSET = LCD_Y_SIZE - tp_dev.y;
+
+		//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
+		GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, X_OFFSET, Y_OFFSET, zoom, buffer);
+
+		for (int y = 0; y < LCD_Y_SIZE ; y++)
+			for (int x = 0; x < LCD_X_SIZE; x++)
+				ILI9341_Draw_Pixel(x, y, buffer[x + y*LCD_X_SIZE]);
+
+		snprintf(display_string, 30, "zoom: %d", zoom );
+		ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);
 	}
-
-	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, X_OFFSET, Y_OFFSET, zoom, buffer);
-
-	for (int y = 0; y < LCD_Y_SIZE ; y++)
-		for (int x = 0; x < LCD_X_SIZE; x++)
-			ILI9341_Draw_Pixel(x, y, buffer[x + y*LCD_X_SIZE]);
-
-	snprintf(display_string, 30, "zoom: %d", zoom );
-	ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);
 
 	HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 }
