@@ -198,9 +198,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	HAL_NVIC_DisableIRQ(EXTI1_IRQn);
 
 	if (tp_dev.scan(0)) {
-		//zoom += 50;
+		/* If there is a touch, recalculate the offset and increase the zoom. */
+		zoom += 100;
 		X_OFFSET += (LCD_X_SIZE >> 1) - tp_dev.x;
 		Y_OFFSET += (LCD_Y_SIZE >> 1) - tp_dev.y;
+		/* Protection so that we don't fall off the edge (module with double the screen size)
+		X_OFFSET = X_OFFSET % (LCD_X_SIZE << 1);
+		Y_OFFSET = Y_OFFSET % (LCD_Y_SIZE << 1) */
+
 		CalcAndDisplayFractal(X_OFFSET, Y_OFFSET, zoom);
 	}
 
