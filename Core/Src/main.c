@@ -53,12 +53,14 @@
 /* USER CODE BEGIN PV */
 uint8_t buffer[LCD_X_SIZE*LCD_Y_SIZE] = {0};
 uint16_t zoom = 100;
+int16_t X_OFFSET = LCD_X_SIZE/2;
+int16_t Y_OFFSET = LCD_Y_SIZE/2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void CalcAndDisplayFractal(uint16_t offset_x, uint16_t offset_y, uint16_t zoom);
+void CalcAndDisplayFractal(int16_t offset_x, int16_t offset_y, uint16_t zoom);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -176,7 +178,7 @@ void SystemClock_Config(void)
  * 			offset_y: Y-axis offset in pixels
  * 				zoom: Zoom factor
  */
-void CalcAndDisplayFractal(uint16_t offset_x, uint16_t offset_y, uint16_t zoom){
+void CalcAndDisplayFractal(int16_t offset_x, int16_t offset_y, uint16_t zoom){
 
 	char display_string[15]={' '};
 
@@ -195,15 +197,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	HAL_NVIC_DisableIRQ(EXTI1_IRQn);
 
-	uint16_t X_OFFSET = LCD_X_SIZE/2;
-	uint16_t Y_OFFSET = LCD_Y_SIZE/2;
-
 	if (tp_dev.scan(0)) {
-		zoom += 50;
-		X_OFFSET = tp_dev.x;
-		Y_OFFSET = tp_dev.y;
+		//zoom += 50;
+		X_OFFSET += (LCD_X_SIZE >> 1) - tp_dev.x;
+		Y_OFFSET += (LCD_Y_SIZE >> 1) - tp_dev.y;
 		CalcAndDisplayFractal(X_OFFSET, Y_OFFSET, zoom);
-
 	}
 
 	HAL_NVIC_EnableIRQ(EXTI1_IRQn);

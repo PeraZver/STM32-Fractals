@@ -49,8 +49,8 @@ void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 * ITERATION value is reached. This way, every pixel is assigned a value that corresponds to color intesity
 * and represents as a part of a Mandelbrot set.
 */
-void GenerateMandelbrot_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
-							uint16_t offset_y, uint16_t zoom, uint8_t * buffer)
+void GenerateMandelbrot_fpu(uint16_t size_x, uint16_t size_y, int16_t offset_x,
+							int16_t offset_y, uint16_t zoom, uint8_t * buffer)
 {
 	 float tmp1 = 0, tmp2 = 0;
 	 float num_real = 0, num_img = 0;
