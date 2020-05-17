@@ -13,8 +13,8 @@
  * ITERATION value is reached. This way, every pixel is assigned a value that corresponds to color intesity
  * and represents as a part of a Julia set.
  */
-void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
-					   uint16_t offset_y, uint16_t zoom, uint8_t * buffer)
+void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, int16_t offset_x,
+					   int16_t offset_y, uint16_t zoom, uint8_t * buffer)
 {
 	 float tmp1, tmp2;
 	 float num_real, num_img;

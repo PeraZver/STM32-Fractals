@@ -59,8 +59,9 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 #define NO_CONVERSIONS 10
-#define B1_Pin GPIO_PIN_13
-#define B1_GPIO_Port GPIOC
+#define BLUE_BUTTON_Pin GPIO_PIN_13
+#define BLUE_BUTTON_GPIO_Port GPIOC
+#define BLUE_BUTTON_EXTI_IRQn EXTI15_10_IRQn
 #define T_DO_Pin GPIO_PIN_2
 #define T_DO_GPIO_Port GPIOC
 #define T_DIN_Pin GPIO_PIN_3

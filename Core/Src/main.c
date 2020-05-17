@@ -55,6 +55,7 @@ uint8_t buffer[LCD_X_SIZE*LCD_Y_SIZE] = {0};
 uint16_t zoom = 100;
 int16_t X_OFFSET = LCD_X_SIZE/2;
 int16_t Y_OFFSET = LCD_Y_SIZE/2;
+enum Fractal_type fractal = MANDELBROT;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -182,8 +183,10 @@ void CalcAndDisplayFractal(int16_t offset_x, int16_t offset_y, uint16_t zoom){
 
 	char display_string[15]={' '};
 
-	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, offset_x, offset_y, zoom, buffer);
+	if (fractal == JULIA)
+		GenerateJulia_fpu(LCD_X_SIZE, LCD_Y_SIZE, offset_x, offset_y, zoom, buffer);
+	else
+		GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, offset_x, offset_y, zoom, buffer);
 
 	for (int y = 0; y < LCD_Y_SIZE ; y++)
 		for (int x = 0; x < LCD_X_SIZE; x++)
@@ -195,21 +198,32 @@ void CalcAndDisplayFractal(int16_t offset_x, int16_t offset_y, uint16_t zoom){
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
-	HAL_NVIC_DisableIRQ(EXTI1_IRQn);
+	if (GPIO_Pin == T_IRQ_Pin){
+		HAL_NVIC_DisableIRQ(EXTI1_IRQn);
 
-	if (tp_dev.scan(0)) {
-		/* If there is a touch, recalculate the offset and increase the zoom. */
-		zoom += 100;
-		X_OFFSET += (LCD_X_SIZE >> 1) - tp_dev.x;
-		Y_OFFSET += (LCD_Y_SIZE >> 1) - tp_dev.y;
-		/* Protection so that we don't fall off the edge (module with double the screen size)
-		X_OFFSET = X_OFFSET % (LCD_X_SIZE << 1);
-		Y_OFFSET = Y_OFFSET % (LCD_Y_SIZE << 1) */
+		if (tp_dev.scan(0)) {
+			/* If there is a touch, recalculate the offset and increase the zoom. */
+			zoom += 100;
+			X_OFFSET += (LCD_X_SIZE >> 1) - tp_dev.x;
+			Y_OFFSET += (LCD_Y_SIZE >> 1) - tp_dev.y;
+			/* Protection so that we don't fall off the edge (module with double the screen size)
+			X_OFFSET = X_OFFSET % (LCD_X_SIZE << 1);
+			Y_OFFSET = Y_OFFSET % (LCD_Y_SIZE << 1) */
+
+			CalcAndDisplayFractal(X_OFFSET, Y_OFFSET, zoom);
+		}
+
+		HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+	}
+	else if (GPIO_Pin == BLUE_BUTTON_Pin){
+		zoom = 100;
+		X_OFFSET = LCD_X_SIZE/2;
+		Y_OFFSET = LCD_Y_SIZE/2;
+		fractal = !fractal;
 
 		CalcAndDisplayFractal(X_OFFSET, Y_OFFSET, zoom);
 	}
-
-	HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+	else ;
 }
 /* USER CODE END 4 */
 

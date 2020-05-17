@@ -19,9 +19,13 @@
 
 #define MANDELBROT_OFFSET LCD_X_SIZE/4
 
+enum Fractal_type {
+	JULIA,
+	MANDELBROT
+};
 
-void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
-					   uint16_t offset_y, uint16_t zoom, uint8_t * buffer);
+void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, int16_t offset_x,
+					   int16_t offset_y, uint16_t zoom, uint8_t * buffer);
 
 void GenerateMandelbrot_fpu(uint16_t size_x, uint16_t size_y, int16_t offset_x,
 							int16_t offset_y, uint16_t zoom, uint8_t * buffer);
