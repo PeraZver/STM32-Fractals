@@ -32,14 +32,15 @@ This is an educational project, so the purpose is only fun and learning.
 ## Software
  * Standard STM32 HAL Libraries, on the fresh STM32CubeIDE
  * ILI9341 Driver - I'm using an existing library from [this guy](https://github.com/martnak/STM32-ILI9341)
-   * Actually, I switched to [this one](https://github.com/afiskon/stm32-ili9341); it has nice GUI.
+   * Actually, I switched to [this one](https://github.com/afiskon/stm32-ili9341); it has nice GUI. I added a Touchscreen calibration function as well.
 
 ## To-Do
 
- - [x] Button zoom 
- - [ ] Touchscreen centering
+ - [x] Touchscreen zoom 
+ - [x] Touchscreen centering
  - [ ] Colour mapping
  - [x] Mandelbrot fractals
+ - [x] Switch between Julia and Mandelbrot
 
 ## Resources
 
