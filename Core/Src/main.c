@@ -58,7 +58,7 @@ uint16_t zoom = 100;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void CalcAndDisplayFractal(uint16_t offset_x, uint16_t offset_y, uint16_t zoom);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -106,6 +106,8 @@ int main(void)
   //ILI9341_Draw_Empty_Rectangle(YELLOW, 10, 10, 310, 230);
 
   //tp_dev.adjust();
+  /* Initial display in the middle of the screen */
+  CalcAndDisplayFractal(LCD_X_SIZE >> 1, LCD_Y_SIZE >> 1, zoom);
 
   /* USER CODE END 2 */
  
@@ -167,6 +169,28 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/*
+ * Calculate and Display fractal.
+ * @params: offset_x: X-axis offset in pixels
+ * 			offset_y: Y-axis offset in pixels
+ * 				zoom: Zoom factor
+ */
+void CalcAndDisplayFractal(uint16_t offset_x, uint16_t offset_y, uint16_t zoom){
+
+	char display_string[15]={' '};
+
+	//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
+	GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, offset_x, offset_y, zoom, buffer);
+
+	for (int y = 0; y < LCD_Y_SIZE ; y++)
+		for (int x = 0; x < LCD_X_SIZE; x++)
+			ILI9341_Draw_Pixel(x, y, buffer[x + y*LCD_X_SIZE]);
+
+	snprintf(display_string, 30, "zoom: %d", zoom );
+	ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);
+}
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 	HAL_NVIC_DisableIRQ(EXTI1_IRQn);
@@ -174,22 +198,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	uint16_t X_OFFSET = LCD_X_SIZE/2;
 	uint16_t Y_OFFSET = LCD_Y_SIZE/2;
 
-	char display_string[15]={' '};
-
 	if (tp_dev.scan(0)) {
-		zoom += 20;
-		X_OFFSET = LCD_X_SIZE - tp_dev.x;
-		Y_OFFSET = LCD_Y_SIZE - tp_dev.y;
+		zoom += 50;
+		X_OFFSET = tp_dev.x;
+		Y_OFFSET = tp_dev.y;
+		CalcAndDisplayFractal(X_OFFSET, Y_OFFSET, zoom);
 
-		//GenerateJulia_fpu     (X_SIZE, Y_SIZE, X_SIZE/2, Y_SIZE/2, zoom, buffer);
-		GenerateMandelbrot_fpu(LCD_X_SIZE, LCD_Y_SIZE, X_OFFSET, Y_OFFSET, zoom, buffer);
-
-		for (int y = 0; y < LCD_Y_SIZE ; y++)
-			for (int x = 0; x < LCD_X_SIZE; x++)
-				ILI9341_Draw_Pixel(x, y, buffer[x + y*LCD_X_SIZE]);
-
-		snprintf(display_string, 30, "zoom: %d", zoom );
-		ILI9341_Draw_String(0, 0, WHITE, BLACK, display_string, 2);
 	}
 
 	HAL_NVIC_EnableIRQ(EXTI1_IRQn);

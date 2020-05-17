@@ -52,15 +52,15 @@ void GenerateJulia_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 void GenerateMandelbrot_fpu(uint16_t size_x, uint16_t size_y, uint16_t offset_x,
 							uint16_t offset_y, uint16_t zoom, uint8_t * buffer)
 {
-	 float tmp1, tmp2;
-	 float num_real, num_img;
-	 float radius;
-	 uint8_t i;
-	 int x,y;
+	 float tmp1 = 0, tmp2 = 0;
+	 float num_real = 0, num_img = 0;
+	 float radius = 0;
+	 uint8_t i = 0;
+	 int x = 0, y = 0;
 
 	 for (y=0; y<size_y; y++) {
 		 for (x=0; x<size_x; x++) {      // Run through all the pixels
-			 num_img = y - offset_y;    // Zoom in a proper scale
+			 num_img = y - offset_y;     // Zoom in a proper scale
 			 num_img = num_img / zoom;
 			 num_real = x - offset_x - MANDELBROT_OFFSET; // Original Mandelbrot  has that funny offset
 			 num_real = num_real / zoom;
