@@ -216,14 +216,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 	}
 	else if (GPIO_Pin == BLUE_BUTTON_Pin){
+		HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
 		zoom = 100;
 		X_OFFSET = LCD_X_SIZE/2;
 		Y_OFFSET = LCD_Y_SIZE/2;
 		fractal = !fractal;
 
 		CalcAndDisplayFractal(X_OFFSET, Y_OFFSET, zoom);
+		HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 	}
 	else ;
+	HAL_Delay(500);
 }
 /* USER CODE END 4 */
 
