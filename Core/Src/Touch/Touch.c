@@ -1,11 +1,3 @@
-
-//	     LCD            STM32
-//      T_IRQ            PB1
-//      T_DO             PB2
-//      T_DIN            PC4
-//      T_CS             PC5
-//      T_CLK            PB0
-
 #include "Touch.h"
 
 uint16_t POINT_COLOR = 0x0000, BACK_COLOR = 0xFFFF;
@@ -20,12 +12,14 @@ _m_tp_dev tp_dev=
  	0,
 	0,
 	0,
-	0.0880780146,   // Calibration made manualy on 14.5.2020
+	0.0880780146,   // Calibration made manually on 14.5.2020
 	0.0655307993,
 	-13,
 	-16,
 	0
 };
+
+SPI_HandleTypeDef touch_spi;
 
 uint8_t CMD_RDY = 0XD0;
 uint8_t CMD_RDX = 0X90;
@@ -39,19 +33,9 @@ uint8_t CMD_RDX = 0X90;
 ******************************************************************************/
 void TP_Write_Byte(uint8_t num)
 {
-	uint8_t count = 0;
-	for(count = 0; count < 8; count++)
-	{
-		if(num & 0x80)
-			T_DIN_ON;
-		else
-			T_DIN_OFF;
-
-		num <<= 1;
-		T_CLK_OFF;
-		HAL_Delay(1);
-		T_CLK_ON;
-	}
+	if (HAL_SPI_Transmit(&touch_spi, &num, 1, 1) != HAL_OK)  {
+	    Error_Handler();
+	  }
 }
 
 /*****************************************************************************
@@ -63,29 +47,15 @@ void TP_Write_Byte(uint8_t num)
 ******************************************************************************/
 uint16_t TP_Read_AD(uint8_t CMD)
 {
-	uint8_t count = 0;
-	uint16_t Num = 0;
-	T_CLK_OFF;
-	T_DIN_OFF;
-	T_CS_OFF;
+
+	uint8_t Num[2] = {0};
+
+	HAL_GPIO_WritePin(T_CS_GPIO_Port, T_CS_Pin, GPIO_PIN_RESET);
 	TP_Write_Byte(CMD);
-	HAL_Delay(6);
-	T_CLK_OFF;
-	HAL_Delay(1);
-	T_CLK_ON;
-	HAL_Delay(1);
-	T_CLK_OFF;
-	for(count = 0; count < 16; count++)
-	{
-		Num <<= 1;
-		T_CLK_OFF;
-		HAL_Delay(1);
-		T_CLK_ON;
-		if(T_DO) Num++;
-	}
-	Num >>= 4;
-	T_CS_ON;
-	return(Num);
+	HAL_SPI_Receive(&touch_spi, (uint8_t *)Num, 2, HAL_MAX_DELAY);
+	HAL_GPIO_WritePin(T_CS_GPIO_Port, T_CS_Pin, GPIO_PIN_SET);
+
+	return( (Num[1]<<8) + Num[0] );
 
 }
 
@@ -540,19 +510,14 @@ uint8_t TP_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 
-	GPIO_InitStruct.Pin 	= T_IRQ_Pin | T_DO_Pin;
+	GPIO_InitStruct.Pin 	= T_IRQ_Pin;
 	GPIO_InitStruct.Mode 	= GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull 	= GPIO_NOPULL;
 	GPIO_InitStruct.Speed 	= GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-	GPIO_InitStruct.Pin 	= T_CLK_Pin;
-	GPIO_InitStruct.Mode 	= GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull 	= GPIO_NOPULL;
-	GPIO_InitStruct.Speed 	= GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-	GPIO_InitStruct.Pin 	= T_DIN_Pin | T_CS_Pin;
+	GPIO_InitStruct.Pin 	= T_CS_Pin;
 	GPIO_InitStruct.Mode 	= GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull 	= GPIO_NOPULL;
 	GPIO_InitStruct.Speed 	= GPIO_SPEED_FREQ_LOW;
@@ -561,4 +526,24 @@ uint8_t TP_Init(void)
 	return 1;
 }
 
+void Touch_SPI_Init(void)
+{
 
+  touch_spi.Instance = SPI2;
+  touch_spi.Init.Mode = SPI_MODE_MASTER;
+  touch_spi.Init.Direction = SPI_DIRECTION_2LINES;
+  touch_spi.Init.DataSize = SPI_DATASIZE_8BIT;
+  touch_spi.Init.CLKPolarity = SPI_POLARITY_LOW;
+  touch_spi.Init.CLKPhase = SPI_PHASE_1EDGE;
+  touch_spi.Init.NSS = SPI_NSS_SOFT;
+  touch_spi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  touch_spi.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  touch_spi.Init.TIMode = SPI_TIMODE_DISABLE;
+  touch_spi.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  touch_spi.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&touch_spi) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+}

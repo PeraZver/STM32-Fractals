@@ -29,11 +29,13 @@ typedef struct
 }_m_tp_dev;
 
 extern _m_tp_dev tp_dev;
+extern SPI_HandleTypeDef touch_spi;
 
 //#define PEN  		PBin(1)  	//T_PEN
 #define T_IRQ		HAL_GPIO_ReadPin(T_IRQ_GPIO_Port, T_IRQ_Pin)
 
 //#define T_DO 		PBin(2)   	//T_MISO
+/*
 #define T_DO_ON		HAL_GPIO_WritePin(T_DO_GPIO_Port, T_DO_Pin, GPIO_PIN_SET)
 #define T_DO_OFF	HAL_GPIO_WritePin(T_DO_GPIO_Port, T_DO_Pin, GPIO_PIN_RESET)
 #define T_DO		HAL_GPIO_ReadPin(T_DO_GPIO_Port, T_DO_Pin)
@@ -50,6 +52,7 @@ extern _m_tp_dev tp_dev;
 #define T_CS_ON		HAL_GPIO_WritePin(T_CS_GPIO_Port, T_CS_Pin, GPIO_PIN_SET)
 #define T_CS_OFF	HAL_GPIO_WritePin(T_CS_GPIO_Port, T_CS_Pin, GPIO_PIN_RESET)
 
+*/
 void TP_Write_Byte(uint8_t num);
 uint16_t TP_Read_AD(uint8_t CMD);
 uint16_t TP_Read_XOY(uint8_t xy);
@@ -64,3 +67,4 @@ void TP_Adjust(void);
 uint8_t TP_Init(void);
 
 void TP_Adj_Info_Show(uint16_t x0,uint16_t y0,uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t x3,uint16_t y3, double fac);
+void Touch_SPI_Init(void);

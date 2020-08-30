@@ -98,10 +98,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_SPI1_Init();
+  //MX_SPI1_Init();
   MX_USART2_UART_Init();
+  //MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   ILI9341_Init();
+  Touch_SPI_Init();
   ILI9341_Set_Rotation(0);
   ILI9341_Fill_Screen(BLACK);
   HAL_Delay(500);
