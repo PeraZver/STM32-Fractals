@@ -49,13 +49,21 @@ uint16_t TP_Read_AD(uint8_t CMD)
 {
 
 	uint8_t Num[2] = {0};
+	uint16_t TouchData = 0;
 
 	HAL_GPIO_WritePin(T_CS_GPIO_Port, T_CS_Pin, GPIO_PIN_RESET);
 	TP_Write_Byte(CMD);
+	HAL_Delay(6);
 	HAL_SPI_Receive(&touch_spi, (uint8_t *)Num, 2, HAL_MAX_DELAY);
 	HAL_GPIO_WritePin(T_CS_GPIO_Port, T_CS_Pin, GPIO_PIN_SET);
 
-	return( (Num[1]<<8) + Num[0] );
+	TouchData = ((uint16_t)Num[0]<<8 ) +  Num[1];
+
+	/* Touchscreen ADC gives away 12bit data, and SPI receives 16 bits. Normal operation
+	 * to extract this would be (Num[0]<<8  +  Num[1]) >> 4. But, since one clk cycle is
+	 * spent on BUSY signal, MSB actually starts at the 15th bit. Therefore, >> 3.
+	 * */
+	return(TouchData >> 3 );
 
 }
 
@@ -536,7 +544,7 @@ void Touch_SPI_Init(void)
   touch_spi.Init.CLKPolarity = SPI_POLARITY_LOW;
   touch_spi.Init.CLKPhase = SPI_PHASE_1EDGE;
   touch_spi.Init.NSS = SPI_NSS_SOFT;
-  touch_spi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  touch_spi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   touch_spi.Init.FirstBit = SPI_FIRSTBIT_MSB;
   touch_spi.Init.TIMode = SPI_TIMODE_DISABLE;
   touch_spi.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
