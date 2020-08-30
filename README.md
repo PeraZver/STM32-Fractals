@@ -22,11 +22,11 @@ This is an educational project, so the purpose is only fun and learning.
 |SCK      |CN5-6  | PA5       | D13, SCK          |
 |LED      |CN7-5  | VDD       | 5V                |
 |MISO     |CN5-5  | PA6       | D12, MISO         |
-|T_CLK    |CN9-7  | PB10      | A3, Touch CLK     |
-|T_CS     |CN10-6 | PC5       |               	  |
-|T_DIN    |CN7-37 | PC3       |              	  |
-|T_DO     |CN7-35 | PC2       |              	  |
-|T_IRQ    |CN10-24| PB1       |              	  |
+|T_CLK    |CN9-7  | PB10      | D6, Touch CLK     |
+|T_CS     |CN10-6 | PC5       | Touch Chip Select |
+|T_DIN    |CN7-37 | PC3       | Touch Data In  	  |
+|T_DO     |CN7-35 | PC2       | Touch Data OUt 	  |
+|T_IRQ    |CN10-24| PB1       | Touch Interrupt   |
 
 
 ## Software
@@ -41,6 +41,7 @@ This is an educational project, so the purpose is only fun and learning.
  - [ ] Colour mapping
  - [x] Mandelbrot fractals
  - [x] Switch between Julia and Mandelbrot
+ - [ ] Touchscreen over SPI instead of bit banging
 
 ## Resources
 
